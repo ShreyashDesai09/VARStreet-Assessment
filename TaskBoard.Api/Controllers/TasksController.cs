@@ -44,6 +44,17 @@ namespace TaskBoard.Api.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTask(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+
+            if (task == null)
+                return NotFound();
+
+            return Ok(task);
+        }
+
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] Status status)
         {
@@ -95,35 +106,6 @@ namespace TaskBoard.Api.Controllers
             return Ok();
 
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, Project updatedProject)
-        {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
-                return NotFound();
-
-            project.Name = updatedProject.Name;
-            project.Description = updatedProject.Description;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(project);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProject(int id)
-        {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
-                return NotFound();
-
-            _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
+  
     }
 }
