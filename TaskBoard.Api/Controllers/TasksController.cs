@@ -34,15 +34,55 @@ namespace TaskBoard.Api.Controllers
         }
 
         [HttpGet("project/{projectId}")]
-        public async Task<IActionResult> GetTasksByProject(int projectId)
-        {
-            var tasks = await _context.Tasks
-                .Where(t => t.ProjectId == projectId)
-                .ToListAsync();
+        public async Task<IActionResult> GetTasksByProject(
+        int projectId,
+        string? status,
+        string? priority,
+        string sortBy = "createdAt",
+        string sortDir = "desc",
+        int page = 1,
+        int pageSize = 10)
+            {
+                if (page < 1) page = 1;
+                if (pageSize > 50) pageSize = 50;
 
-            return Ok(tasks);
+                var query = _context.Tasks.Where(t => t.ProjectId == projectId);
 
-        }
+                if (!string.IsNullOrEmpty(status))
+                    query = query.Where(t => t.Status.ToString() == status);
+
+                if (!string.IsNullOrEmpty(priority))
+                    query = query.Where(t => t.Priority.ToString() == priority);
+
+                if (sortBy == "dueDate")
+                    query = sortDir == "asc"
+                        ? query.OrderBy(t => t.DueDate)
+                        : query.OrderByDescending(t => t.DueDate);
+                else if (sortBy == "priority")
+                    query = sortDir == "asc"
+                        ? query.OrderBy(t => t.Priority)
+                        : query.OrderByDescending(t => t.Priority);
+                else
+                    query = sortDir == "asc"
+                        ? query.OrderBy(t => t.CreatedAt)
+                        : query.OrderByDescending(t => t.CreatedAt);
+
+                var totalCount = await query.CountAsync();
+
+                var data = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return Ok(new
+                {
+                    data,
+                    page,
+                    pageSize,
+                    totalCount,
+                    totalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+                });
+            }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTask(int id)
