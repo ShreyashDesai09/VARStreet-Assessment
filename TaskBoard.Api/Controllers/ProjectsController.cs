@@ -22,8 +22,19 @@ namespace TaskBoard.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProject(Project project)
         {
-            _context.Projects.Add(project);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(new { errors = ModelState });
+
+            try
+            {
+                _context.Projects.Add(project);
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return Conflict("Project name already exists");
+            }
+
             return Ok(project);
         }
 

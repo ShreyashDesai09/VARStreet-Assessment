@@ -26,6 +26,9 @@ namespace TaskBoard.Api.Controllers
 
             var taskExists = await _context.Tasks.AnyAsync(t =>  t.Id == comment.TaskId);
 
+            if (!ModelState.IsValid)
+                return BadRequest(new { errors = ModelState });
+
             if (!taskExists)
                 return BadRequest("Invalid Task Id");
 

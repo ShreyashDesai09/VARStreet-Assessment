@@ -29,4 +29,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsJsonAsync(new
+        {
+            message = "Internal Server Error"
+        });
+    });
+});
+
 app.Run();

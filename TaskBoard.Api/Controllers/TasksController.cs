@@ -24,6 +24,9 @@ namespace TaskBoard.Api.Controllers
         {
             var projectExists = await _context.Projects.AnyAsync(p => p.Id == task.ProjectId);
 
+            if (!ModelState.IsValid)
+                return BadRequest(new { errors = ModelState });
+
             if (!projectExists)
                 return BadRequest("Invalid ProjectId");
 
@@ -114,6 +117,9 @@ namespace TaskBoard.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int id, ProjectTask updateTask)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest(new { errors = ModelState });
 
             var task = await _context.Tasks.FindAsync(id);
 
