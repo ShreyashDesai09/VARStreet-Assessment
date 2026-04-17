@@ -1,65 +1,63 @@
-# TaskBoard – Full Stack Assignment
+# 🚀 TaskBoard – Full Stack Assignment
 
-## Overview
-This project is a task management system where users can create projects, manage tasks within those projects, and add comments. It includes filtering, sorting, pagination, and dashboard insights.
+## 📌 Overview
+TaskBoard is a task management system where users can create projects, manage tasks, and add comments. It supports filtering, sorting, pagination, and dashboard insights.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-Backend
+### 🔧 Backend
 - ASP.NET Core Web API (.NET 7)
 - Entity Framework Core 7
 - SQLite
 
-Frontend
+### 🎨 Frontend
 - React.js
 - Axios
 - React Router
 
 ---
 
-## Backend Features
+## ✨ Features
 
-Projects
-- Create, update, delete projects
-- Unique project name constraint (409 conflict handling)
+### 📁 Projects
+- Create, update, delete projects  
+- Unique project name validation (409 handling)
 
-Tasks
-- Create, update, delete tasks
-- Update task status
-- Get tasks by project
-- Filtering by status and priority
-- Sorting by due date, priority, created date
-- Pagination with metadata response
+### 📝 Tasks
+- Create, update, delete tasks  
+- Update task status  
+- Filter by status and priority  
+- Sort by due date, priority, created date  
+- Pagination with metadata  
 
-Comments
-- Add comments to tasks
-- Fetch comments by task
-- Delete comments
+### 💬 Comments
+- Add comments  
+- View comments by task  
+- Delete comments  
 
-Dashboard
-- Total tasks
-- Tasks grouped by status
-- Overdue tasks
+### 📊 Dashboard
+- Total tasks  
+- Tasks by status  
+- Overdue tasks  
 
 ---
 
-## API Features (Tasks Endpoint)
+## 🔍 API Features (Tasks)
 
 Supports query parameters:
 
-- status → filter by task status  
-- priority → filter by priority  
-- sortBy → dueDate | priority | createdAt  
-- sortDir → asc | desc  
-- page → page number (default 1)  
-- pageSize → max 50  
+- `status` → filter by status  
+- `priority` → filter by priority  
+- `sortBy` → dueDate | priority | createdAt  
+- `sortDir` → asc | desc  
+- `page` → default 1  
+- `pageSize` → max 50  
 
-Example:
-GET /api/tasks/project/1?status=InProgress&sortBy=dueDate&page=1&pageSize=10
 
-Response format:
+### Response Format
+```json
 {
   "data": [],
   "page": 1,
@@ -67,49 +65,20 @@ Response format:
   "totalCount": 0,
   "totalPages": 0
 }
+```
 
----
 
-## Error Handling
+## ⚙️ Backend Setup
 
-- 200 → Success  
-- 201 → Created  
-- 400 → Validation errors  
-- 404 → Not found  
-- 409 → Duplicate project name  
-- 500 → Internal server error  
-
-Global exception middleware is implemented to handle unhandled errors.
-
----
-
-## Backend Setup
-
-1. Navigate to backend
 cd TaskBoard.Api
-
-2. Restore dependencies
 dotnet restore
-
-3. Run migrations (IMPORTANT)
 dotnet ef migrations add InitialCreate
 dotnet ef database update
-
-4. Run API
 dotnet run
 
----
 
-## Notes
+## 👨‍💻 Author
 
-- Built using .NET 7 (ensure compatible EF Core version)
-- SQLite database is created locally (taskboard.db)
-- Filtering, sorting, and pagination implemented as per requirements
-- Clean separation of controllers (Projects, Tasks, Comments, Dashboard)
-
----
-
-## Author
-
-Shreyash Desai  
-LinkedIn | GitHub
+[![Portfolio](https://img.shields.io/badge/Portfolio-%23121011.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://shreyashdesai09.github.io)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shreyash-desai-886979237/)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ShreyashDesai09)
