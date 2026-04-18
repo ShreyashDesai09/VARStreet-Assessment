@@ -1,85 +1,87 @@
-# 🚀 TaskBoard – Full Stack Assignment
+# 📋 TaskBoard - Full Stack Management System
 
-## 📌 Overview
-TaskBoard is a task management system where users can create projects, manage tasks, and add comments. It supports filtering, sorting, pagination, and dashboard insights.
+A modern, full-stack Task Management application designed to streamline project workflows. This project features a robust **.NET 8 Web API** backend and a dynamic **React** frontend with real-time analytics and theme customization.
+
+---
+
+## 🚀 Features
+
+* **Project Management:** Create and organize multiple projects from a central hub.
+* **Dynamic Task Board:** Filter tasks by **Status** (Todo, InProgress, Review, Done) and **Priority** (Low, Medium, High, Critical).
+* **Live Analytics Dashboard:** Visual stat cards tracking total tasks, completion rates, and overdue items.
+* **Theme Engine:** Seamless Light and Dark mode toggle using React **Context API**.
+* **Server-Side Pagination:** Optimized data fetching for high-performance task listing.
+* **RESTful Integration:** Full CRUD operations synced with a .NET backend.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### 🔧 Backend
-- ASP.NET Core Web API (.NET 7)
-- Entity Framework Core 7
-- SQLite
+### Frontend
+* **Framework:** React.js
+* **Routing:** React Router DOM (v6)
+* **State Management:** Context API (Theme Management)
+* **Styling:** Modern CSS3 with Variables (Grid & Flexbox)
+* **HTTP Client:** Axios
 
-### 🎨 Frontend
-- React.js
-- Axios
-- React Router
-
----
-
-## ✨ Features
-
-### 📁 Projects
-- Create, update, delete projects  
-- Unique project name validation (409 handling)
-
-### 📝 Tasks
-- Create, update, delete tasks  
-- Update task status  
-- Filter by status and priority  
-- Sort by due date, priority, created date  
-- Pagination with metadata  
-
-### 💬 Comments
-- Add comments  
-- View comments by task  
-- Delete comments  
-
-### 📊 Dashboard
-- Total tasks  
-- Tasks by status  
-- Overdue tasks  
+### Backend
+* **Framework:** .NET 8 Web API
+* **Database:** Entity Framework Core
+* **Architecture:** Service-Repository Pattern
+* **Features:** DTO Mapping, Enums, and CORS configuration.
 
 ---
 
-## 🔍 API Features (Tasks)
+## ⚙️ Installation & Setup
 
-Supports query parameters:
+### 1. Backend Setup (.NET)
+1.  Navigate to the backend folder:
+    ```bash
+    cd TaskBoard.Api
+    ```
+2.  Update the connection string in `appsettings.json`.
+3.  Run migrations and start the server:
+    ```bash
+    dotnet ef database update
+    dotnet run
+    ```
+    *The API will be available at `http://localhost:5245`*
 
-- `status` → filter by status  
-- `priority` → filter by priority  
-- `sortBy` → dueDate | priority | createdAt  
-- `sortDir` → asc | desc  
-- `page` → default 1  
-- `pageSize` → max 50  
+### 2. Frontend Setup (React)
+1.  Navigate to the frontend folder:
+    ```bash
+    cd task-board-ui
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Start the development server:
+    ```bash
+    npm start
+    ```
+    *The app will open at `http://localhost:3000`*
 
+---
 
-### Response Format
-```json
-{
-  "data": [],
-  "page": 1,
-  "pageSize": 10,
-  "totalCount": 0,
-  "totalPages": 0
-}
-```
+## 📂 Project Structure
 
+* `/src/components` - Reusable UI components (Navbar, ThemeToggle).
+* `/src/context` - ThemeContext for global theme state.
+* `/src/pages` - Main views: Projects, Tasks, and Dashboard.
+* `/src/App.js` - Routing configuration for the 4 core paths.
 
-## ⚙️ Backend Setup
+---
 
-```terminal
-cd TaskBoard.Api
-dotnet restore
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-dotnet run
-```
+## 📖 Available Scripts (React)
 
-## 👨‍💻 Author
+### `npm start`
+Runs the app in development mode.
+### `npm run build`
+Builds the app for production to the `build` folder.
+### `npm test`
+Launches the test runner.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-%23121011.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://shreyashdesai09.github.io)
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shreyash-desai-886979237/)
-[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ShreyashDesai09)
+---
+
+### Developed by Shreyash Desai 🚀
