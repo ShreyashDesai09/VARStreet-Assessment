@@ -8,95 +8,97 @@ function Tasks() {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
+  const [status, setStatus] = useState("Todo"); 
+  const [priority, setPriority] = useState("Medium"); 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [title, setTitle] = useState("");
 
-  const API = `http://localhost:5245/api/tasks/project/${projectId}`;
+  const API_URL = `http://localhost:5245/api/tasks`;
 
   const fetchTasks = async () => {
-    let url = `${API}?page=${page}&pageSize=5`;
+    try {
+      let url = `${API_URL}/project/${projectId}?page=${page}&pageSize=5`;
+      if (status && status !== "Todo") url += `&status=${status}`;
+      if (priority && priority !== "Medium") url += `&priority=${priority}`;
 
-    if (status) url += `&status=${status}`;
-    if (priority) url += `&priority=${priority}`;
+      const res = await axios.get(url);
+      setTasks(res.data.data);
+      setTotalPages(res.data.totalPages);
+    } catch (err) {
+      console.error("Error fetching tasks", err);
+    }
+  };
 
-    const res = await axios.get(url);
-    setTasks(res.data.data);
-    setTotalPages(res.data.totalPages);
+  const createTask = async () => {
+    if (!title) return;
+    try {
+      await axios.post(API_URL, {
+        title,
+        projectId: parseInt(projectId),
+        status: status, 
+        priority: priority 
+      });
+      setTitle("");
+      fetchTasks();
+    } catch (err) {
+      console.error("Task creation failed", err);
+    }
   };
 
   useEffect(() => {
     fetchTasks();
-  }, [status, priority, page]);
+  }, [page, projectId]); 
 
   return (
     <>
       <Navbar />
-
       <div className="container">
-        <h2>Tasks (Project {projectId})</h2>
+        <header style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+          <h2>Tasks (Project {projectId})</h2>
+          <div>
+            <button onClick={() => navigate("/")} style={{ marginRight: "10px" }}>← Back</button>
+            <button onClick={() => navigate(`/dashboard/${projectId}`)}>Dashboard</button>
+          </div>
+        </header>
 
-        <button onClick={() => navigate("/")}>← Back to Projects</button>
-
-        <button onClick={() => navigate(`/dashboard/${projectId}`)}>
-          Go to Dashboard
-        </button>
-
-        <div className="form">
-          <select onChange={(e) => setStatus(e.target.value)}>
-            <option value="">All Status</option>
+        <div className="form-group">
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="Todo">Todo</option>
             <option value="InProgress">InProgress</option>
             <option value="Review">Review</option>
             <option value="Done">Done</option>
           </select>
-
-          <select onChange={(e) => setPriority(e.target.value)}>
-            <option value="">All Priority</option>
+          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
             <option value="Critical">Critical</option>
           </select>
+          <input 
+            placeholder="Task Title..." 
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)} 
+          />
+          <button onClick={createTask}>Add Task</button>
         </div>
 
-        {tasks.length === 0 ? (
-          <p>No tasks found</p>
-        ) : (
-          <ul>
-            {tasks.map((t) => (
-              <li key={t.id}>
-                <strong>{t.title}</strong>
-                <div>
-                  <span className={`tag ${t.status.toLowerCase()}`}>
-                    {t.status}
-                  </span>
-
-                  <span className={`tag ${t.priority.toLowerCase()}`}>
-                    {t.priority}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="task-list">
+          {tasks.length === 0 ? <p>No tasks found</p> : tasks.map((t) => (
+            <div key={t.id} className="card" style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+              <strong>{t.title}</strong>
+              <div>
+                <span className={`tag ${t.status?.toLowerCase()}`}>{t.status}</span>
+                <span className={`tag ${t.priority?.toLowerCase()}`}>{t.priority}</span>
+              </div>
+            </div>
+          ))}
+        </div>
 
         <div className="pagination">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-            Prev
-          </button>
-
-          <span>
-            Page {page} / {totalPages}
-          </span>
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            Next
-          </button>
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>Prev</button>
+          <span>Page {page} of {totalPages || 1}</span>
+          <button disabled={page >= totalPages} onClick={() => setPage(page + 1)}>Next</button>
         </div>
       </div>
     </>

@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TaskBoard.Api.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using TaskBoard.Api.Models;
-using System.Linq;
+using TaskBoard.Api.Services;
 
 namespace TaskBoard.Api.Controllers
 {
@@ -11,61 +8,35 @@ namespace TaskBoard.Api.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
+        private readonly ICommentService _service;
 
-        private readonly AppDbContext _context;
-
-        public CommentsController(AppDbContext context)
+        public CommentsController(ICommentService service)
         {
-            _context = context;
+            _service = service;
         }
-
 
         [HttpPost]
         public async Task<IActionResult> AddComment(Comment comment)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var taskExists = await _context.Tasks.AnyAsync(t =>  t.Id == comment.TaskId);
-
-            if (!ModelState.IsValid)
-                return BadRequest(new { errors = ModelState });
-
-            if (!taskExists)
-                return BadRequest("Invalid Task Id");
-
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
-
-            return Ok(comment);
-
+            var result = await _service.AddAsync(comment);
+            return Ok(result);
         }
-
 
         [HttpGet("task/{taskId}")]
         public async Task<IActionResult> GetCommentsByTask(int taskId)
         {
-
-            var comments = await _context.Comments
-                .Where(c => c.TaskId == taskId)
-                .ToListAsync();
-
+            var comments = await _service.GetByTaskIdAsync(taskId);
             return Ok(comments);
-
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-
-            var comment = await _context.Comments.FindAsync(id);
-
-            if (comment == null)
-                return NotFound();
-
-            _context.Comments.Remove(comment);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-
+            var success = await _service.DeleteAsync(id);
+            if (!success) return NotFound();
+            return NoContent();
         }
     }
 }

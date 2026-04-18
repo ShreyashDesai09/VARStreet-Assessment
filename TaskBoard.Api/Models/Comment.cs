@@ -1,25 +1,22 @@
-﻿    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-    namespace TaskBoard.Api.Models
+namespace TaskBoard.Api.Models
+{
+    public class Comment : BaseEntity
     {
-        public class Comment
-        {
+        public int Id { get; set; }
 
-            public int Id { get; set; }
+        [Required]
+        public int TaskId { get; set; }
 
-            [Required]
-            public int TaskId { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Author { get; set; } = string.Empty;
 
-            [Required]
-            [MaxLength(50)]
-            public string Author { get; set; } = string.Empty;
+        [Required]
+        [MaxLength(500)]
+        public string Body { get; set; } = string.Empty;
 
-            [Required]
-            [MaxLength(500)]
-            public string Body { get; set; } = string.Empty;
-
-            public DateTime CreatedAt { get; set; }
-
-            public ProjectTask ProjectTask { get; set; } = null!;
-        }
+        public ProjectTask ProjectTask { get; set; } = null!;
     }
+}

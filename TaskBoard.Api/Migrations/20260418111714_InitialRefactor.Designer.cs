@@ -11,8 +11,8 @@ using TaskBoard.Api.Data;
 namespace TaskBoard.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260417145711_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260418111714_InitialRefactor")]
+    partial class InitialRefactor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,9 @@ namespace TaskBoard.Api.Migrations
                     b.Property<int>("TaskId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TaskId");
@@ -65,6 +68,9 @@ namespace TaskBoard.Api.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

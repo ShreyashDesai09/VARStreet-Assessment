@@ -34,32 +34,22 @@ namespace TaskBoard.Api.Data
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(CancellationToken ct = default)
         {
-            var entries = ChangeTracker.Entries();
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is BaseEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entry in entries)
             {
-                if (entry.Entity is Project project && entry.State == EntityState.Added)
-                {
-                    project.CreatedAt = DateTime.UtcNow;
-                }
+                var entity = (BaseEntity)entry.Entity;
+                entity.UpdatedAt = DateTime.UtcNow;
 
-                if (entry.Entity is ProjectTask task)
+                if (entry.State == EntityState.Added)
                 {
-                    if (entry.State == EntityState.Added)
-                        task.CreatedAt = DateTime.UtcNow;
-
-                    task.UpdatedAt = DateTime.UtcNow;
-                }
-
-                if (entry.Entity is Comment comment && entry.State == EntityState.Added)
-                {
-                    comment.CreatedAt = DateTime.UtcNow;
+                    entity.CreatedAt = DateTime.UtcNow;
                 }
             }
-
-            return base.SaveChangesAsync(cancellationToken);
+            return base.SaveChangesAsync(ct);
         }
     }
 }

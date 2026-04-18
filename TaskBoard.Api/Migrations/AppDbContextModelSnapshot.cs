@@ -39,6 +39,9 @@ namespace TaskBoard.Api.Migrations
                     b.Property<int>("TaskId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TaskId");
@@ -62,6 +65,9 @@ namespace TaskBoard.Api.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

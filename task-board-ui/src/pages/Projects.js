@@ -7,24 +7,29 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
   const navigate = useNavigate();
 
   const API = "http://localhost:5245/api/projects";
 
   const fetchProjects = async () => {
-    const res = await axios.get(API);
-    setProjects(res.data);
+    try {
+      const res = await axios.get(API);
+      setProjects(res.data);
+    } catch (err) {
+      console.error("Fetch projects failed", err);
+    }
   };
 
   const createProject = async () => {
     if (!name) return;
-
-    await axios.post(API, { name, description });
-
-    setName("");
-    setDescription("");
-    fetchProjects();
+    try {
+      await axios.post(API, { name, description });
+      setName("");
+      setDescription("");
+      fetchProjects();
+    } catch (err) {
+      console.error("Create project failed", err);
+    }
   };
 
   useEffect(() => {
@@ -34,37 +39,34 @@ function Projects() {
   return (
     <>
       <Navbar />
-
       <div className="container">
         <h2>Projects</h2>
-
-        <div className="form">
-          <input
-            placeholder="Project Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+        <div className="form-group">
+          <input 
+            placeholder="Project Name" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
           />
-          <input
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+          <input 
+            placeholder="Description" 
+            value={description} 
+            onChange={(e) => setDescription(e.target.value)} 
           />
-          <button disabled={!name} onClick={createProject}>
-            Add
-          </button>
+          <button disabled={!name} onClick={createProject}>Add Project</button>
         </div>
 
-        {projects.length === 0 ? (
-          <p>No projects yet</p>
-        ) : (
-          <ul>
-            {projects.map((p) => (
-              <li key={p.id} onClick={() => navigate(`/tasks/${p.id}`)}>
-                {p.name} - {p.description}
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="grid">
+          {projects.length === 0 ? (
+            <p>No projects yet</p>
+          ) : (
+            projects.map((p) => (
+              <div key={p.id} className="card" onClick={() => navigate(`/tasks/${p.id}`)}>
+                <h3>{p.name}</h3>
+                <p>{p.description}</p>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </>
   );

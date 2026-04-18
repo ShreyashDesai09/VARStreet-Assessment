@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "../context/ThemeToggle"; // Import the toggle component
 
 function Navbar() {
   const navigate = useNavigate();
@@ -19,19 +20,25 @@ function Navbar() {
         TaskBoard
       </h3>
 
-      <button
-        style={{
-          background: "white",
-          color: "#007bff",
-          border: "none",
-          padding: "6px 10px",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-        onClick={() => navigate("/")}
-      >
-        Projects
-      </button>
+      {/* Group your buttons on the right */}
+      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <button
+          style={{
+            background: "white",
+            color: "#007bff",
+            border: "none",
+            padding: "6px 10px",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+          onClick={() => navigate("/")}
+        >
+          Projects
+        </button>
+
+        {/* Add the Toggle here */}
+        <ThemeToggle />
+      </div>
     </div>
   );
 }

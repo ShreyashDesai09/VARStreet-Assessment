@@ -1,90 +1,57 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TaskBoard.Api.Data;
-using TaskBoard.Api.Models;
-
+﻿using Microsoft.AspNetCore.Mvc;
+using TaskBoard.Api.Services;
+using TaskBoard.Api.DTOS;
 
 namespace TaskBoard.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ProjectsController : ControllerBase
     {
+        private readonly IProjectService _service;
 
-        private readonly AppDbContext _context;
-
-        public ProjectsController(AppDbContext context)
+        public ProjectsController(IProjectService service)
         {
-            _context = context;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateProject(Project project)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(new { errors = ModelState });
-
-            try
-            {
-                _context.Projects.Add(project);
-                await _context.SaveChangesAsync();
-            }
-            catch
-            {
-                return Conflict("Project name already exists");
-            }
-
-            return Ok(project);
+            _service = service;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProjects()
         {
-            var projects = await _context.Projects.ToListAsync();
+            var projects = await _service.GetAllAsync();
             return Ok(projects);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProject(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
-                return NotFound();
-
+            var project = await _service.GetByIdAsync(id);
+            if (project == null) return NotFound();
             return Ok(project);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, Project updatedProject)
+        [HttpPost]
+        public async Task<IActionResult> CreateProject(CreateProjectDto dto)
         {
-            var project = await _context.Projects.FindAsync(id);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (project == null)
-                return NotFound();
-
-            project.Name = updatedProject.Name;
-            project.Description = updatedProject.Description;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(project);
+            try
+            {
+                var result = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetProject), new { id = result.Id }, result);
+            }
+            catch (Exception)
+            {
+                return Conflict(new { message = "Project name already exists" });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
-                return NotFound();
-
-            _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
         }
-
     }
 }
