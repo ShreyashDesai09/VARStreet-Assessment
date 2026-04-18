@@ -11,6 +11,29 @@ A modern, full-stack Task Management application designed to streamline project 
 * **Frontend State:** Used the **React Context API** for global theme management (Light/Dark mode) to avoid "prop drilling" and ensure a consistent UI state across all components.
 * **Assumptions:** It is assumed that the user has **SQL Server** installed locally or has access to a connection string for database persistence.
 
+
+## 🛠️ Development Workflow (Full Flow)
+
+The backend was scaffolded and configured using the following .NET CLI sequence:
+
+```bash
+# Create Project
+dotnet new webapi -n TaskBoard.Api --framework net7.0
+cd TaskBoard.Api
+
+# Add Dependencies
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 7.0.0
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 7.0.0
+
+# Database Initialization
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+# Run Project
+dotnet run
+```
+
 ---
 
 ## ⚙️ Prerequisites
