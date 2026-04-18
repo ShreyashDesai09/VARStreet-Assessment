@@ -21,6 +21,15 @@ Before running the application, ensure you have the following installed:
 * [SQL Server / Azure SQL](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 * [EF Core Tools](https://learn.microsoft.com/en-us/ef/core/get-started/overview/install) (`dotnet tool install --global dotnet-ef`)
 
+## 🛠️ Environment Setup
+
+### Install .NET 7.0
+If you do not have the .NET 7 SDK installed, use the following command (Windows/PowerShell):
+```powershell
+dotnet tool install --global dotnet-ef
+```
+# Download from: [https://dotnet.microsoft.com/en-us/download/dotnet/7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+
 ---
 
 ## 🚀 Installation & Database Setup
