@@ -30,32 +30,41 @@ Before running the application, ensure you have the following installed:
     ```bash
     cd TaskBoard.Api
     ```
+
 2.  Update the **Connection String** in `appsettings.json` to point to your SQL Server instance.
+
 3.  **Apply Migrations:** This will create the database schema automatically.
     ```bash
     dotnet ef migrations add InitialCreate
     dotnet ef database update
     ```
+
 4.  **Seed Database:** The application is configured to seed initial data (Status/Priority types) upon the first successful database update or through the `DbInitializer` class on startup.
+
 5.  **Run the API:**
     ```bash
     dotnet run
     ```
+
     *The API will be available at `http://localhost:5245`*
 
 ### 2. Frontend Setup
+
 1.  Navigate to the frontend directory:
     ```bash
     cd task-board-ui
     ```
+
 2.  Install all required dependencies:
     ```bash
     npm install
     ```
+
 3.  **Run the UI:**
     ```bash
     npm start
     ```
+
     *The application will launch at `http://localhost:3000`*
 
 ---
@@ -79,9 +88,9 @@ To ensure seamless integration, the following was configured in the backend:
 
 ## 👤 Connect with Me
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shreyash-amrut-desai/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shreyash-desai)
-[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=react&logoColor=white)](https://shreyash-desai.github.io/portfolio/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-%23121011.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://shreyashdesai09.github.io)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shreyash-desai-886979237/)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ShreyashDesai09)
 
 ---
 
