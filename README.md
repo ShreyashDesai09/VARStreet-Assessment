@@ -51,7 +51,7 @@ If you do not have the .NET 7 SDK installed, use the following command (Windows/
 ```powershell
 dotnet tool install --global dotnet-ef
 ```
-# Download from: [https://dotnet.microsoft.com/en-us/download/dotnet/7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+## Download from: [https://dotnet.microsoft.com/en-us/download/dotnet/7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 
 ---
 
@@ -99,6 +99,19 @@ dotnet tool install --global dotnet-ef
 
     *The application will launch at `http://localhost:3000`*
 
+## Script 
+
+### Windows Script 
+
+Just Double Click on `setup.bat` to run the script
+
+### Linux Script 
+
+```bash
+    chmod +x setup.sh && ./setup.sh
+```
+
+Run this on terminal to run the script
 ---
 
 ## 🏗️ Technical Highlights (`Program.cs`)
