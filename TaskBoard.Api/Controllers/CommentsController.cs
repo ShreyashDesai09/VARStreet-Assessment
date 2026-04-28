@@ -16,9 +16,12 @@ namespace TaskBoard.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(Comment comment)
+        public async Task<IActionResult> AddComment([FromBody] Comment comment)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var result = await _service.AddAsync(comment);
             return Ok(result);
